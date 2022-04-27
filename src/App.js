@@ -1,12 +1,13 @@
 import Header from "./UI/Header";
-import "./App.scss";
-import "mapbox-gl/dist/mapbox-gl.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import MainMap from "./UI/MainMap";
-import List from "./UI/Pages/List";
-import Login from "./UI/Pages/Login";
-import Register from "./UI/Pages/Register";
-import Post from "./UI/Pages/Post";
+import List from "./Pages/List";
+import Login from "./Pages/Login";
+import Register from "./Pages/Register";
+import Post from "./Pages/Post";
+import "mapbox-gl/dist/mapbox-gl.css";
+import "./App.scss";
+
 function App() {
   return (
     <BrowserRouter>

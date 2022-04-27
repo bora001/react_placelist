@@ -1,11 +1,14 @@
 import React, { useState, useRef } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../firebase-config";
+import { auth } from "../firebase-config";
 import { useNavigate } from "react-router-dom";
-
+import { useSelector, useDispatch } from "react-redux";
+import { userAction } from "../Store/user-slice";
 import "./Place.scss";
-import "../../App.scss";
+import "../App.scss";
+
 const Login = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [inputData, setInputData] = useState({});
   const ref = useRef();
@@ -29,6 +32,7 @@ const Login = () => {
       if (user) {
         navigate("/");
         console.log(user.user.uid);
+        dispatch(userAction.setUser(user.user.uid));
       }
     } catch (err) {
       ref.current.reset();
