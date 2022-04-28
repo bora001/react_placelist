@@ -1,16 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { getDatabase, ref as dataRef, push } from "firebase/database";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
-import { userAction } from "../Store/user-slice";
 
 const Post = () => {
   const [inputData, setInputData] = useState({});
   const storage = getStorage();
   const userInfo = useSelector((state) => state.user);
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   const addImg = (e) => {
     const { name, value } = e.target;
@@ -55,7 +53,7 @@ const Post = () => {
           const { file, ...rest } = newData;
           const newPlace = Object.assign({}, { ...rest });
           navigate("/list");
-          dispatch(userAction.setList([...userInfo.placelist, newPlace]));
+          // dispatch(userAction.setList([...userInfo.placelist, newPlace]));
         });
       });
     } else {

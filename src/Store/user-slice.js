@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   userUid: null,
-  placelist: [],
+  // placelist: [],
   // isLogin: false, status: null
 };
 const userSlice = createSlice({
@@ -12,9 +12,9 @@ const userSlice = createSlice({
     setUser(state, action) {
       state.userUid = action.payload;
     },
-    setList(state, action) {
-      state.placelist = action.payload;
-    },
+    // setList(state, action) {
+    //   state.placelist = action.payload;
+    // },
   },
 });
 

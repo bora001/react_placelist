@@ -1,15 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-
+import { devToken } from "../dev";
 import "./List.scss";
 import Items from "./Items";
+import axios from "axios";
+import { useLocation } from "react-router-dom";
+
 const List = (props) => {
   const [placelist, setPlacelist] = useState([]);
-  const userInfo = useSelector((state) => state.user);
+  const location = useLocation();
 
   useEffect(() => {
-    setPlacelist(() => userInfo.placelist);
-  }, [userInfo.placelist.length]);
+    axios.get(devToken.firebaseUrl + `Place.json`).then((data) => {
+      setPlacelist(() => Object.values(data.data));
+    });
+  }, [location.key]);
 
   return (
     <section className="section_list">

@@ -5,7 +5,6 @@ import { useParams } from "react-router-dom";
 import ItemBox from "./ItemBox";
 import ReviewBox from "./ReviewBox";
 import { devToken } from "../../dev";
-import { async } from "@firebase/util";
 const ItemDetail = (props) => {
   const [placeInfo, setPlaceInfo] = useState();
   const user = useSelector((state) => state.user);

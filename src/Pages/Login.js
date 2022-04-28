@@ -2,7 +2,7 @@ import React, { useState, useRef } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase-config";
 import { useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { userAction } from "../Store/user-slice";
 import "./Place.scss";
 import "../App.scss";

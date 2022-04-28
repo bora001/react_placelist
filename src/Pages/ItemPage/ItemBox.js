@@ -2,9 +2,6 @@ import React from "react";
 import ItemMap from "./ItemMap";
 
 const ItemBox = (props) => {
-  console.log(props);
-  //   console.log(props.uid, props.place.user);
-  //   console.log(props.uid == props.place.user);
   return (
     <div className="item_box">
       <div className="detail_box">
