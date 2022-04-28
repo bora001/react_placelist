@@ -18,7 +18,6 @@ const Register = () => {
   const register = (e) => {
     e.preventDefault();
     if (inputData.password == inputData.passwordConfirm) {
-      console.log("correct");
       postData();
     } else {
       alert("Incorrect password");

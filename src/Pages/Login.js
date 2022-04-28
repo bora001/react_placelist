@@ -31,7 +31,6 @@ const Login = () => {
 
       if (user) {
         navigate("/");
-        console.log(user.user.uid);
         dispatch(userAction.setUser(user.user.uid));
       }
     } catch (err) {

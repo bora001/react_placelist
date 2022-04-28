@@ -1,14 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { getDatabase, ref as dataRef, push } from "firebase/database";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
+import { userAction } from "../Store/user-slice";
 
 const Post = () => {
   const [inputData, setInputData] = useState({});
   const storage = getStorage();
   const userInfo = useSelector((state) => state.user);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const addImg = (e) => {
     const { name, value } = e.target;
@@ -25,6 +27,7 @@ const Post = () => {
 
       reader.onloadend = () => {
         setInputData(() => ({
+          id: n + n,
           ...inputData,
           file: newFile,
           img: reader.result,
@@ -41,15 +44,18 @@ const Post = () => {
     if (userInfo.userUid) {
       const storageRef = ref(storage, inputData.file.name);
       uploadBytes(storageRef, inputData.file).then((url) => {
-        console.log(url, "rulll");
-        console.log(url.ref);
         getDownloadURL(url.ref).then((url) => {
           const db = getDatabase();
-          push(dataRef(db, "Place"), {
+          const newData = {
             ...inputData,
             img: url,
             user: userInfo.userUid,
-          });
+          };
+          push(dataRef(db, "Place"), newData);
+          const { file, ...rest } = newData;
+          const newPlace = Object.assign({}, { ...rest });
+          navigate("/list");
+          dispatch(userAction.setList([...userInfo.placelist, newPlace]));
         });
       });
     } else {
