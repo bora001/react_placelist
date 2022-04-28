@@ -1,6 +1,20 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
+import axios from "axios";
+import { devToken } from "../dev";
+
 import "./List.scss";
 const List = () => {
+  const [placelist, setPlacelist] = useState([]);
+  const userInfo = useSelector((state) => state.user);
+
+  useEffect(() => {
+    axios.get(devToken.firebaseUrl + `Place.json`).then(
+      (data) => console.log(data)
+      // setPlacelist(Object.values(data.data))
+    );
+  }, []);
+
   return (
     <section className="section_list">
       <div className="list_box">

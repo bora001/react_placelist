@@ -20,16 +20,18 @@ const Header = () => {
           <Link to="/">PlaceList</Link>
         </div>
         <div className="menu">
+          <Link to="/list">List</Link>
+
           {isLogin ? (
             <div className="login_box">
               <Link to="/post">Post Place</Link>
+
               <Link to="/" onClick={logout}>
                 Logout
               </Link>
             </div>
           ) : (
             <div className="login_box ">
-              <Link to="/list">List</Link>
               <Link to="/login">Login</Link>
               <Link to="/register">Register</Link>
             </div>

@@ -12,17 +12,25 @@ const Post = () => {
 
   const addImg = (e) => {
     const { name, value } = e.target;
+
     if (e.target.files) {
+      const n = Math.random().toString(36).slice(2);
+      const id = n + n + ".";
       let reader = new FileReader();
       let file = e.target.files[0];
+
+      const type = file.name.split(".")[1];
+      const blob = file.slice(0, file.size);
+      const newFile = new File([blob], id + type, { type: file.type });
+
       reader.onloadend = () => {
         setInputData(() => ({
           ...inputData,
-          file,
+          file: newFile,
           img: reader.result,
         }));
       };
-      reader.readAsDataURL(file);
+      reader.readAsDataURL(newFile);
     } else {
       setInputData((inputData) => ({ ...inputData, [name]: value }));
     }
@@ -31,19 +39,17 @@ const Post = () => {
   const postData = (e) => {
     e.preventDefault();
     if (userInfo.userUid) {
-      const n = Math.random().toString(36).slice(2);
-      const id = n + n + ".";
-      const type = inputData.file.name.split(".")[1];
-      const storageRef = ref(storage, id + type);
-      // const storageRef = ref(storage, inputData.file.name);
-      uploadBytes(storageRef, inputData.file);
-      getDownloadURL(ref(storage, inputData.file.name)).then((url) => {
-        console.log(url);
-        const db = getDatabase();
-        push(dataRef(db, "Place"), {
-          ...inputData,
-          img: url,
-          user: userInfo.userUid,
+      const storageRef = ref(storage, inputData.file.name);
+      uploadBytes(storageRef, inputData.file).then((url) => {
+        console.log(url, "rulll");
+        console.log(url.ref);
+        getDownloadURL(url.ref).then((url) => {
+          const db = getDatabase();
+          push(dataRef(db, "Place"), {
+            ...inputData,
+            img: url,
+            user: userInfo.userUid,
+          });
         });
       });
     } else {
