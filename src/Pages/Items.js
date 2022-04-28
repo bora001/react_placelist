@@ -1,6 +1,8 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const Items = (props) => {
+  console.log(props);
   return (
     <div className="list_item">
       <div className="img_box">
@@ -22,9 +24,9 @@ const Items = (props) => {
           </div>
         </div>
         <p>{props.place.location}</p>
-        <a href={`/place/${props.place.id}`} className="btn_view">
+        <Link to={`/place/${props.place.id}`} className="btn_view">
           View the place
-        </a>
+        </Link>
       </div>
     </div>
   );

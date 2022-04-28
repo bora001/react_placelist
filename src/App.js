@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Header from "./UI/Header";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import MainMap from "./UI/MainMap";
@@ -12,16 +12,21 @@ import axios from "axios";
 import { devToken } from "./dev";
 import { userAction } from "./Store/user-slice";
 import { useSelector, useDispatch } from "react-redux";
+import ItemDetail from "./Pages/ItemPage/ItemDetail";
 
 function App() {
-  const dispatch = useDispatch();
-  const userInfo = useSelector((state) => state.user);
+  // const dispatch = useDispatch();
+  // const userInfo = useSelector((state) => state.user);
+  // const [placeList, setPlaceList] = useState();
 
-  useEffect(() => {
-    axios
-      .get(devToken.firebaseUrl + `Place.json`)
-      .then((data) => dispatch(userAction.setList(Object.values(data.data))));
-  }, []);
+  // useEffect(() => {
+  //   console.log("test");
+  //   axios.get(devToken.firebaseUrl + `Place.json`).then((data) => {
+  //     dispatch(userAction.setList(Object.values(data.data)));
+  //     setPlaceList(Object.values(data.data));
+  //   });
+  // }, []);
+
   return (
     <BrowserRouter>
       <Header />
@@ -31,6 +36,7 @@ function App() {
         <Route path="/login" element={<Login />} exact />
         <Route path="/register" element={<Register />} exact />
         <Route path="/post" element={<Post />} exact />
+        <Route path="/place/:id" element={<ItemDetail />} exact />
       </Routes>
     </BrowserRouter>
   );
