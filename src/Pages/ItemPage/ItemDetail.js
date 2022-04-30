@@ -21,7 +21,7 @@ const ItemDetail = (props) => {
     <section className="section_place">
       <div className="place_box">
         {placeInfo && <ItemBox place={placeInfo} uid={user.userUid} />}
-        <ReviewBox />
+        <ReviewBox place={placeInfo} />
       </div>
     </section>
   );

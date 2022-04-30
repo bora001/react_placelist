@@ -9,48 +9,51 @@ import {
   ref as dataRef,
   push,
   remove,
+  child,
+  update,
 } from "firebase/database";
 
-const ReviewBox = () => {
+const ReviewBox = (props) => {
   const params = useParams();
   const navigate = useNavigate();
   const ref = useRef();
   const user = useSelector((state) => state.user);
   const [reviewData, setReviewData] = useState({ rate: 3 });
   const [reviewList, setReviewList] = useState([]);
-  const id = params.id;
+  const paramsId = params.id;
 
   useEffect(() => {
     const db = getDatabase();
-    get(dataRef(db, "Comment/")).then((res) => {
-      res.val() && setReviewList(() => Object.values(res.val()[id]));
+    get(dataRef(db, "Comments/")).then((res) => {
+      res.val() && setReviewList(() => Object.values(res.val()[paramsId]));
     });
   }, []);
-
+  console.log(reviewList);
   const delComment = (cmId) => {
     const db = getDatabase();
-    get(dataRef(db, "Comment/")).then((res) => {
-      const [clicked] = Object.entries(res.val()[id]).filter(
-        (x) => x[1].commentId == cmId
+    get(dataRef(db, "Comments/" + paramsId)).then((res) => {
+      const newList = Object.values(res.val()).filter(
+        (item) => item.commentId !== cmId
       );
-      remove(dataRef(db, "Comment/" + id + "/" + clicked[0]));
-      setReviewList(() => reviewList.filter((list) => list.commentId !== cmId));
+      remove(dataRef(db, "Comments/" + paramsId + "/" + cmId));
+      setReviewList(() => newList);
     });
   };
 
   const addReview = (e) => {
     e.preventDefault();
+    const random = Math.random().toString(36).slice(2);
+    const commentId = random + random;
     if (user.userUid) {
-      const data = {
+      const comment = {
         ...reviewData,
         user: user.userUid,
-        placeId: params.id,
+        commentId,
         username: getAuth().currentUser.displayName,
-        commentId: Math.random().toString(36).slice(2),
       };
       const db = getDatabase();
-      push(dataRef(db, "Comment/" + params.id), data);
-      setReviewList(() => [...reviewList, data]);
+      update(dataRef(db, "Comments/" + paramsId + "/" + commentId), comment);
+      setReviewList(() => [...reviewList, comment]);
       ref.current.reset();
     } else {
       navigate("/login");
