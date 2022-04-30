@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { getDatabase, ref as dataRef, push } from "firebase/database";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
 import { devToken } from "../dev";
+import { userAction } from "../Store/user-slice";
 
 const Post = () => {
   const [inputData, setInputData] = useState({});
@@ -12,6 +13,7 @@ const Post = () => {
   const storage = getStorage();
   const userInfo = useSelector((state) => state.user);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const getLocation = async (address) => {
@@ -106,7 +108,7 @@ const Post = () => {
           const { file, ...rest } = newData;
           const newPlace = Object.assign({}, { ...rest });
           navigate("/list");
-          // dispatch(userAction.setList([...userInfo.placelist, newPlace]));
+          dispatch(userAction.setList([...userInfo.placelist, newPlace]));
         });
       });
     } else {
