@@ -30,7 +30,7 @@ const Login = () => {
       );
 
       if (user) {
-        navigate("/");
+        navigate(-1);
         dispatch(userAction.setUser(user.user.uid));
       }
     } catch (err) {
