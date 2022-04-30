@@ -13,6 +13,7 @@ const Header = () => {
     dispatch(userAction.setUser(null));
     signOut(auth);
   };
+  console.log(auth.currentUser);
   return (
     <div>
       <nav>

@@ -11,9 +11,9 @@ const ReviewList = (props) => {
 
   useEffect(() => {
     const db = getDatabase();
-    get(dataRef(db, "Comment/")).then((res) =>
-      setReviewList(() => Object.values(res.val()[id]))
-    );
+    get(dataRef(db, "Comment/")).then((res) => {
+      res.val() && setReviewList(() => Object.values(res.val()[id]));
+    });
   }, [location.key]);
   console.log(reviewList);
   return (
@@ -31,7 +31,7 @@ const ReviewList = (props) => {
               </p>
             </div>
             <div className="review_txt">
-              <h3>{list.user}</h3>
+              <h3>{list.username}</h3>
               <p>{list.comment}</p>
             </div>
             {user.userUid == list.user && (

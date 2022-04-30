@@ -1,5 +1,10 @@
 import React, { useState, useRef } from "react";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+
+import {
+  createUserWithEmailAndPassword,
+  updateProfile,
+  getAuth,
+} from "firebase/auth";
 import { auth } from "../firebase-config";
 import { useNavigate } from "react-router-dom";
 
@@ -30,8 +35,12 @@ const Register = () => {
         auth,
         inputData.email,
         inputData.password
-      );
-      user.user.uid && navigate("/login");
+      ).then((res) => {
+        updateProfile(getAuth().currentUser, {
+          displayName: inputData.username,
+        });
+        res.user.uid && navigate("/login");
+      });
     } catch (err) {
       alert(err.message);
       ref.current.reset();
@@ -48,6 +57,7 @@ const Register = () => {
       >
         <h2>Register</h2>
         <input type="text" placeholder="Email" name="email" required />
+        <input type="text" placeholder="Username" name="username" required />
         <input
           type="password"
           placeholder="password"

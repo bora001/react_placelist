@@ -2,6 +2,7 @@ import React, { useState, useRef } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { getDatabase, get, ref as dataRef, push } from "firebase/database";
+import { getAuth } from "firebase/auth";
 const AddReview = (props) => {
   const navigate = useNavigate();
   const ref = useRef();
@@ -21,6 +22,7 @@ const AddReview = (props) => {
         ...reviewData,
         user: user.userUid,
         placeId: props.params.id,
+        username: getAuth().currentUser.displayName,
       };
       const db = getDatabase();
       push(dataRef(db, "Comment/" + props.params.id), data);
