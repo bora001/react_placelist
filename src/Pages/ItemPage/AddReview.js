@@ -23,6 +23,7 @@ const AddReview = (props) => {
         user: user.userUid,
         placeId: props.params.id,
         username: getAuth().currentUser.displayName,
+        commentId: Math.random().toString(36).slice(2),
       };
       const db = getDatabase();
       push(dataRef(db, "Comment/" + props.params.id), data);

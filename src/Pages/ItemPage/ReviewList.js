@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { getDatabase, get, ref as dataRef, push } from "firebase/database";
+import {
+  getDatabase,
+  get,
+  ref as dataRef,
+  push,
+  remove,
+} from "firebase/database";
 import { useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 
@@ -15,7 +21,18 @@ const ReviewList = (props) => {
       res.val() && setReviewList(() => Object.values(res.val()[id]));
     });
   }, [location.key]);
-  console.log(reviewList);
+
+  const delComment = (cmId) => {
+    console.log("del", cmId);
+    const db = getDatabase();
+    get(dataRef(db, "Comment/")).then((res) => {
+      const [clicked] = Object.entries(res.val()[id]).filter(
+        (x) => x[1].commentId == cmId
+      );
+      remove(dataRef(db, "Comment/" + id + "/" + clicked[0]));
+    });
+  };
+
   return (
     <div className="review_list">
       {reviewList &&
@@ -35,7 +52,12 @@ const ReviewList = (props) => {
               <p>{list.comment}</p>
             </div>
             {user.userUid == list.user && (
-              <button className="del_review">❌</button>
+              <button
+                className="del_review"
+                onClick={() => delComment(list.commentId)}
+              >
+                ❌
+              </button>
             )}
           </div>
         ))}
