@@ -228,6 +228,44 @@ section {
       font-weight: 900;
       margin: 5px;
     }
+
+    .input_box {
+      position: relative;
+      input {
+        width: 100%;
+      }
+      .radio_box {
+        position: absolute;
+        z-index: 9999999;
+        width: 100%;
+        margin-top: -12px;
+        background-color: rgb(232, 240, 254);
+        box-shadow: 5px 5px 5px rgba(83, 81, 85, 0.21);
+
+        .radio_item {
+          display: flex;
+
+          input[type="radio"] {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            opacity: 0;
+          }
+          input[type="radio"][required] {
+            background-color: red;
+            left: 50%;
+            top: 85%;
+          }
+          label {
+            font-size: 16px;
+            cursor: pointer;
+          }
+          &:hover {
+            background-color: rgba(171, 189, 219, 0.842);
+          }
+        }
+      }
+    }
   }
   .pre_img {
     width: 300px;

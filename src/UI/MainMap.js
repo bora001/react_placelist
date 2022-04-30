@@ -4,7 +4,6 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import { devToken } from "../dev";
 import "./MainMap.scss";
 mapboxgl.accessToken = devToken.mapToken;
-
 const MainMap = () => {
   const mapContainer = useRef(null);
   const map = useRef(null);
