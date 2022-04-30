@@ -1,11 +1,11 @@
 import React, { useState, useRef } from "react";
 import { useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { getDatabase, get, ref as dataRef, push } from "firebase/database";
-const AddReview = () => {
+const AddReview = (props) => {
   const navigate = useNavigate();
   const ref = useRef();
-  const params = useParams();
+
   const user = useSelector((state) => state.user);
   const [reviewData, setReviewData] = useState({ rate: 3 });
 
@@ -20,10 +20,10 @@ const AddReview = () => {
       const data = {
         ...reviewData,
         user: user.userUid,
-        placeId: params.id,
+        placeId: props.params.id,
       };
       const db = getDatabase();
-      push(dataRef(db, "Comment/"), data);
+      push(dataRef(db, "Comment/" + props.params.id), data);
       ref.current.reset();
     } else {
       navigate("/login");

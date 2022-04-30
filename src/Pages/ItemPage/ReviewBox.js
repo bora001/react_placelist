@@ -1,10 +1,13 @@
+import { useParams } from "react-router-dom";
 import AddReview from "./AddReview";
 import ReviewList from "./ReviewList";
+
 const ReviewBox = () => {
+  const params = useParams();
   return (
     <div className="review_box">
-      <AddReview />
-      <ReviewList />
+      <AddReview params={params} />
+      <ReviewList params={params} />
     </div>
   );
 };

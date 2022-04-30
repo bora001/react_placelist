@@ -8,7 +8,6 @@ import { useLocation } from "react-router-dom";
 const List = (props) => {
   const [placelist, setPlacelist] = useState([]);
   const location = useLocation();
-
   useEffect(() => {
     axios.get(devToken.firebaseUrl + `Place.json`).then((data) => {
       setPlacelist(() => Object.values(data.data));

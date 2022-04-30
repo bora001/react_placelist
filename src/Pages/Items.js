@@ -2,7 +2,6 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 const Items = (props) => {
-  console.log(props);
   return (
     <div className="list_item">
       <div className="img_box">
