@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { devToken } from "../dev";
 import "./List.scss";
 import Items from "./Items";
@@ -14,7 +14,7 @@ const List = (props) => {
     axios.get(devToken.firebaseUrl + `Place.json`).then((data) => {
       dispatch(userAction.setList(Object.values(data.data)));
     });
-  }, [user.placelist.length]);
+  }, []);
 
   return (
     <section className="section_list">

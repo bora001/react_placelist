@@ -64,7 +64,6 @@ const Post = () => {
     setGeoClicked(false);
     if (e.target.name == "geo") {
       const data = e.target.attributes.data.value;
-      console.log(inputData.location);
       setInputData((inputData) => ({ ...inputData, location: data }));
       setGeoClicked(() => true);
     }

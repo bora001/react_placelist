@@ -1,15 +1,13 @@
 import { useParams } from "react-router-dom";
 import React, { useState, useRef, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { getAuth } from "firebase/auth";
 import {
   getDatabase,
   get,
   ref as dataRef,
-  push,
   remove,
-  child,
   update,
 } from "firebase/database";
 
@@ -21,15 +19,14 @@ const ReviewBox = (props) => {
   const [reviewData, setReviewData] = useState({ rate: 3 });
   const [reviewList, setReviewList] = useState([]);
   const paramsId = params.id;
-
   useEffect(() => {
     const db = getDatabase();
-    get(dataRef(db, "Comments/")).then((res) => {
-      res.val() && setReviewList(() => Object.values(res.val()[paramsId]));
+    get(dataRef(db, "Comments/" + paramsId)).then((res) => {
+      res.val() && setReviewList(() => Object.values(res.val()));
     });
   }, []);
-  console.log(reviewList);
-  const delComment = (cmId) => {
+
+  const delComment = (cmId, cmRate) => {
     const db = getDatabase();
     get(dataRef(db, "Comments/" + paramsId)).then((res) => {
       const newList = Object.values(res.val()).filter(
@@ -37,6 +34,18 @@ const ReviewBox = (props) => {
       );
       remove(dataRef(db, "Comments/" + paramsId + "/" + cmId));
       setReviewList(() => newList);
+      get(dataRef(db, "Place/" + paramsId)).then((res) => {
+        const newPlaceInfo = {
+          ...res.val(),
+          rate:
+            res.val().comments > 1
+              ? (res.val().rate / res.val().comments) * 2 - cmRate
+              : 0,
+          comments: res.val().comments - 1,
+        };
+        update(dataRef(db, "Place/" + paramsId), newPlaceInfo);
+        props.setRate(() => newPlaceInfo.rate / newPlaceInfo.comments);
+      });
     });
   };
 
@@ -54,6 +63,18 @@ const ReviewBox = (props) => {
       const db = getDatabase();
       update(dataRef(db, "Comments/" + paramsId + "/" + commentId), comment);
       setReviewList(() => [...reviewList, comment]);
+      get(dataRef(db, "Place/" + paramsId)).then((res) => {
+        const newPlaceInfo = {
+          ...res.val(),
+          rate: res.val().rate
+            ? res.val().rate + reviewData.rate / 1
+            : reviewData.rate / 1,
+          comments: res.val().comments ? res.val().comments + 1 : 1,
+        };
+        update(dataRef(db, "Place/" + paramsId), newPlaceInfo);
+        props.setRate(() => newPlaceInfo.rate / newPlaceInfo.comments);
+      });
+
       ref.current.reset();
     } else {
       navigate("/login");
@@ -118,7 +139,7 @@ const ReviewBox = (props) => {
               {user.userUid == list.user && (
                 <button
                   className="del_review"
-                  onClick={() => delComment(list.commentId)}
+                  onClick={() => delComment(list.commentId, list.rate)}
                 >
                   ❌
                 </button>

@@ -1,6 +1,5 @@
 import React from "react";
 import ItemMap from "./ItemMap";
-
 const ItemBox = (props) => {
   return (
     <div className="item_box">
@@ -15,12 +14,14 @@ const ItemBox = (props) => {
               <p>&#9733;&#9733;&#9733;&#9733;&#9733;</p>
               <p
                 className="filled"
-                //   style="width: ${average * 20}%"
+                style={{
+                  width: `${props.rate ? props.rate * 20 : 50}%`,
+                }}
               >
                 &#9733;&#9733;&#9733;&#9733;&#9733;
               </p>
             </div>
-            <p className="current_rate">average</p>
+            <p className="current_rate">{props.rate ? props.rate : ""}</p>
           </div>
           <p>{props.place.location}</p>
         </div>

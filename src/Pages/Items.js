@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 const Items = (props) => {
+  const [average, setAverage] = useState(
+    props.place.rate / props.place.comments
+  );
   return (
     <div className="list_item">
       <div className="img_box">
@@ -14,9 +17,9 @@ const Items = (props) => {
             <p>&#9733;&#9733;&#9733;&#9733;&#9733;</p>
             <p
               className="filled"
-              //   style="width: ${
-              //   average * 20
-              // }%"
+              style={{
+                width: `${average ? average * 20 : 50}%`,
+              }}
             >
               &#9733;&#9733;&#9733;&#9733;&#9733;
             </p>
