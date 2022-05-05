@@ -1,29 +1,25 @@
 import React, { useRef, useEffect, useState } from "react";
-import mapboxgl from "mapbox-gl";
+import ReactMapGL from "react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { devToken } from "../../dev";
-mapboxgl.accessToken = devToken.mapToken;
 
 const ItemMap = () => {
-  const mapContainer = useRef(null);
-  const map = useRef(null);
-  const [lng, setLng] = useState(151.20776);
-  const [lat, setLat] = useState(-33.86854);
-  const [zoom, setZoom] = useState(3);
-
-  useEffect(() => {
-    if (map.current) return;
-    map.current = new mapboxgl.Map({
-      container: mapContainer.current,
-      style: "mapbox://styles/mapbox/streets-v11",
-      center: [lng, lat],
-      zoom: zoom,
-    });
+  const [viewport, setViewport] = useState({
+    latitude: -33.86854,
+    longitude: 151.20776,
+    zoom: 3,
   });
 
   return (
-    <div>
-      <div id="map" ref={mapContainer} className="map-container" />
+    <div className="map-container">
+      <ReactMapGL
+        {...viewport}
+        mapboxApiAccessToken={devToken.mapToken}
+        mapStyle="mapbox://styles/mapbox/streets-v11"
+        onViewportChange={(viewport) => {
+          setViewport(viewport);
+        }}
+      ></ReactMapGL>
     </div>
   );
 };

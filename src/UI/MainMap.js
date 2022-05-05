@@ -1,29 +1,42 @@
 import React, { useRef, useEffect, useState } from "react";
-import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { devToken } from "../dev";
+import { Marker } from "react-map-gl";
+import ReactMapGL from "react-map-gl";
 import "./MainMap.scss";
-mapboxgl.accessToken = devToken.mapToken;
+import { useSelector, useDispatch } from "react-redux";
+import axios from "axios";
+import { userAction } from "../Store/user-slice";
 const MainMap = () => {
-  const mapContainer = useRef(null);
-  const map = useRef(null);
-  const [lng, setLng] = useState(151.20776);
-  const [lat, setLat] = useState(-33.86854);
-  const [zoom, setZoom] = useState(3);
+  const [placeList, setPlaceList] = useState();
+  const placelist = useSelector((state) => state.placelist);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    if (map.current) return;
-    map.current = new mapboxgl.Map({
-      container: mapContainer.current,
-      style: "mapbox://styles/mapbox/streets-v11",
-      center: [lng, lat],
-      zoom: zoom,
+    axios.get(devToken.firebaseUrl + `Place.json`).then((data) => {
+      dispatch(userAction.setList(Object.values(data.data)));
+      console.log(Object.values(data.data));
+      setPlaceList(() => Object.values(data.data));
     });
+  }, []);
+  // console.log(placeList);
+
+  const [viewport, setViewport] = useState({
+    latitude: -33.86854,
+    longitude: 151.20776,
+    zoom: 3,
   });
 
   return (
-    <div>
-      <div ref={mapContainer} className="map-container" />
+    <div className="map-container">
+      <ReactMapGL
+        {...viewport}
+        mapboxApiAccessToken={devToken.mapToken}
+        mapStyle="mapbox://styles/mapbox/streets-v11"
+        onViewportChange={(viewport) => {
+          setViewport(viewport);
+        }}
+      ></ReactMapGL>
     </div>
   );
 };
