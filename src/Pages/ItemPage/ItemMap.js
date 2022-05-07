@@ -14,7 +14,7 @@ const ItemMap = () => {
     <div className="map-container">
       <ReactMapGL
         {...viewport}
-        mapboxApiAccessToken={devToken.mapToken}
+        mapboxAccessToken={devToken.mapToken}
         mapStyle="mapbox://styles/mapbox/streets-v11"
         onViewportChange={(viewport) => {
           setViewport(viewport);

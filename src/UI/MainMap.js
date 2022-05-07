@@ -7,36 +7,63 @@ import "./MainMap.scss";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import { userAction } from "../Store/user-slice";
+
 const MainMap = () => {
   const [placeList, setPlaceList] = useState();
   const placelist = useSelector((state) => state.placelist);
   const dispatch = useDispatch();
-
+  const [viewState, setViewState] = React.useState({
+    latitude: -33.86854,
+    longitude: 151.20776,
+    zoom: 10,
+  });
   useEffect(() => {
     axios.get(devToken.firebaseUrl + `Place.json`).then((data) => {
       dispatch(userAction.setList(Object.values(data.data)));
-      console.log(Object.values(data.data));
+      // console.log(Object.values(data.data));
       setPlaceList(() => Object.values(data.data));
     });
   }, []);
-  // console.log(placeList);
 
-  const [viewport, setViewport] = useState({
-    latitude: -33.86854,
-    longitude: 151.20776,
-    zoom: 3,
-  });
+  // console.log(placeList && placeList.map((place) => place.geo.split(",")[0]));
 
+  console.log(placeList);
+
+  const clickMarker = (longitude, latitude) => {
+    setViewState(() => ({
+      longitude,
+      latitude,
+      zoom: 11,
+    }));
+  };
+
+  console.log(devToken.mapToken);
   return (
     <div className="map-container">
       <ReactMapGL
-        {...viewport}
-        mapboxApiAccessToken={devToken.mapToken}
+        {...viewState}
+        mapboxAccessToken={devToken.mapToken}
         mapStyle="mapbox://styles/mapbox/streets-v11"
-        onViewportChange={(viewport) => {
-          setViewport(viewport);
-        }}
-      ></ReactMapGL>
+        onMove={(evt) => setViewState(evt.viewState)}
+      >
+        {placeList &&
+          placeList.map((place) => (
+            <Marker
+              key={place.id}
+              longitude={place.geo.split(",")[1]}
+              latitude={place.geo.split(",")[0]}
+              anchor="bottom"
+              onClick={() =>
+                clickMarker(place.geo.split(",")[1], place.geo.split(",")[0])
+              }
+            >
+              <img
+                src="https://cdn.pixabay.com/photo/2015/12/14/20/29/tracker-1093167_960_720.png"
+                className="map_marker"
+              />
+            </Marker>
+          ))}
+      </ReactMapGL>
     </div>
   );
 };
