@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { devToken } from "../dev";
-import { Marker } from "react-map-gl";
+import { Marker, Popup } from "react-map-gl";
 import ReactMapGL from "react-map-gl";
 import "./MainMap.scss";
 import { useSelector, useDispatch } from "react-redux";
@@ -9,6 +9,8 @@ import axios from "axios";
 import { userAction } from "../Store/user-slice";
 
 const MainMap = () => {
+  const [selectedStore, setSelectedStore] = useState(null);
+
   const [placeList, setPlaceList] = useState();
   const placelist = useSelector((state) => state.placelist);
   const dispatch = useDispatch();
@@ -62,6 +64,19 @@ const MainMap = () => {
                 className="map_marker"
               />
             </Marker>
+          ))}
+        {placeList &&
+          placeList.map((place) => (
+            <Popup
+              key={place.id}
+              offsetLeft={10}
+              longitude={place.geo.split(",")[1]}
+              latitude={place.geo.split(",")[0]}
+              onClose={() => setSelectedStore(null)}
+            >
+              <img src={place.img} alt="" />
+              <div>{place.name}</div>
+            </Popup>
           ))}
       </ReactMapGL>
     </div>
