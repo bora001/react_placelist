@@ -10,7 +10,7 @@ import { userAction } from "../Store/user-slice";
 
 const MainMap = () => {
   const [selectedStore, setSelectedStore] = useState(null);
-
+  const [showPopup, setShowPopup] = useState(null);
   const [placeList, setPlaceList] = useState();
   const placelist = useSelector((state) => state.placelist);
   const dispatch = useDispatch();
@@ -27,16 +27,17 @@ const MainMap = () => {
     });
   }, []);
 
-  // console.log(placeList && placeList.map((place) => place.geo.split(",")[0]));
-
-  console.log(placeList);
-
-  const clickMarker = (longitude, latitude) => {
+  const clickMarker = (longitude, latitude, place) => {
     setViewState(() => ({
       longitude,
       latitude,
       zoom: 11,
     }));
+    setTimeout(() => {
+      setShowPopup(() => place);
+    }, 200);
+    // console.log(index);
+    console.log(showPopup);
   };
 
   console.log(devToken.mapToken);
@@ -49,14 +50,18 @@ const MainMap = () => {
         onMove={(evt) => setViewState(evt.viewState)}
       >
         {placeList &&
-          placeList.map((place) => (
+          placeList.map((place, i) => (
             <Marker
               key={place.id}
               longitude={place.geo.split(",")[1]}
               latitude={place.geo.split(",")[0]}
               anchor="bottom"
               onClick={() =>
-                clickMarker(place.geo.split(",")[1], place.geo.split(",")[0])
+                clickMarker(
+                  place.geo.split(",")[1],
+                  place.geo.split(",")[0],
+                  place
+                )
               }
             >
               <img
@@ -65,19 +70,18 @@ const MainMap = () => {
               />
             </Marker>
           ))}
-        {placeList &&
-          placeList.map((place) => (
-            <Popup
-              key={place.id}
-              offsetLeft={10}
-              longitude={place.geo.split(",")[1]}
-              latitude={place.geo.split(",")[0]}
-              onClose={() => setSelectedStore(null)}
-            >
-              <img src={place.img} alt="" />
-              <div>{place.name}</div>
-            </Popup>
-          ))}
+        {showPopup && (
+          <Popup
+            key={showPopup.id}
+            offsetLeft={10}
+            longitude={showPopup.geo.split(",")[1]}
+            latitude={showPopup.geo.split(",")[0]}
+            onClose={() => setSelectedStore(null)}
+          >
+            <img src={showPopup.img} alt="" />
+            <div>{showPopup.name}</div>
+          </Popup>
+        )}
       </ReactMapGL>
     </div>
   );
