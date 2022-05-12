@@ -7,6 +7,7 @@ import "./MainMap.scss";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import { userAction } from "../Store/user-slice";
+import { Link } from "react-router-dom";
 
 const MainMap = () => {
   const [selectedStore, setSelectedStore] = useState(null);
@@ -78,7 +79,9 @@ const MainMap = () => {
             latitude={showPopup.geo.split(",")[0]}
             onClose={() => setSelectedStore(null)}
           >
-            <img src={showPopup.img} alt="" />
+            <Link to={`/place/${showPopup.id}`}>
+              <img src={showPopup.img} alt="" />
+            </Link>
             <div>{showPopup.name}</div>
           </Popup>
         )}
