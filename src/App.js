@@ -7,10 +7,28 @@ import Login from "./Pages/Login";
 import Register from "./Pages/Register";
 import Post from "./Pages/Post";
 import "mapbox-gl/dist/mapbox-gl.css";
-import "./App.scss";
 import ItemDetail from "./Pages/ItemPage/ItemDetail";
+import axios from "axios";
+import { userAction } from "./Store/user-slice";
+import { devToken } from "./dev";
+import { useSelector, useDispatch } from "react-redux";
+import "./App.scss";
 
 function App() {
+  const dispatch = useDispatch();
+  const data = useSelector((state) => state.user);
+  const fetchData = async () => {
+    try {
+      const result = await axios.get(devToken.firebaseUrl + `Place.json`);
+      dispatch(userAction.setList(Object.values(result.data)));
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   return (
     <BrowserRouter>
       <Header />

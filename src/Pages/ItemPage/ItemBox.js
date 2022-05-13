@@ -27,7 +27,7 @@ const ItemBox = (props) => {
         </div>
       </div>
       <div className="opt_box">
-        <ItemMap />
+        <ItemMap {...props} />
         {props.uid == props.place.user && (
           <button className="del_place">Delete</button>
         )}

@@ -1,20 +1,10 @@
-import React, { useEffect } from "react";
-import { devToken } from "../dev";
-import "./List.scss";
+import React from "react";
 import Items from "./Items";
-import axios from "axios";
-import { userAction } from "../Store/user-slice";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
+import "./List.scss";
 
-const List = (props) => {
-  const dispatch = useDispatch();
+const List = () => {
   const user = useSelector((state) => state.user);
-
-  useEffect(() => {
-    axios.get(devToken.firebaseUrl + `Place.json`).then((data) => {
-      dispatch(userAction.setList(Object.values(data.data)));
-    });
-  }, []);
 
   return (
     <section className="section_list">
