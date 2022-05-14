@@ -22,7 +22,12 @@ const ReviewBox = (props) => {
   useEffect(() => {
     const db = getDatabase();
     get(dataRef(db, "Comments/" + paramsId)).then((res) => {
-      res.val() && setReviewList(() => Object.values(res.val()));
+      if (res.val()) {
+        const reviews = Object.values(res.val());
+        setReviewList(() => reviews);
+        const rate = reviews.reduce((a, b) => Number(a.rate) + Number(b.rate));
+        setReviewData(() => rate / reviews.length);
+      }
     });
   }, []);
 
@@ -74,7 +79,6 @@ const ReviewBox = (props) => {
         update(dataRef(db, "Place/" + paramsId), newPlaceInfo);
         props.setRate(() => newPlaceInfo.rate / newPlaceInfo.comments);
       });
-
       ref.current.reset();
     } else {
       navigate("/login");

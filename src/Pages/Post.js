@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { getDatabase, ref as dataRef, push } from "firebase/database";
+import { getDatabase, ref as dataRef, push, update } from "firebase/database";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
 import { devToken } from "../dev";
@@ -64,6 +64,8 @@ const Post = () => {
       const data = e.target.attributes.data.value;
       setInputData((inputData) => ({ ...inputData, location: data }));
       setGeoClicked(() => true);
+      const locationInput = document.querySelector('input[name="location"]');
+      locationInput.value = e.target.attributes.data.value;
     }
     if (e.target.files) {
       const n = Math.random().toString(36).slice(2);
@@ -104,7 +106,7 @@ const Post = () => {
             user: userInfo.userUid,
             rate: 0,
           };
-          push(dataRef(db, "Place"), newData);
+          update(dataRef(db, "Place/" + inputData.id), newData);
           const { file, ...rest } = newData;
           const newPlace = Object.assign({}, { ...rest });
           navigate("/list");
@@ -128,13 +130,7 @@ const Post = () => {
           required
         />
         <div className="input_box">
-          <input
-            type="text"
-            placeholder="Location"
-            name="location"
-            // value={inputData.location}
-            required
-          />
+          <input type="text" placeholder="Location" name="location" required />
           {!inputData.geo && (
             <div className="radio_box">
               {locationList &&
