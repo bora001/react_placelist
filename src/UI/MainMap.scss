@@ -6,16 +6,3 @@
   width: 150px;
   height: 100px;
 }
-
-.map_marker {
-  width: 20px;
-}
-.mapboxgl-popup {
-  top: -40px;
-  width: fit-content;
-}
-.mapboxgl-popup .mapboxgl-popup-content > div {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}

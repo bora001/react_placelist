@@ -10,6 +10,7 @@ import "./MainMap.scss";
 const MainMap = () => {
   const [showPopup, setShowPopup] = useState(null);
   const placelist = useSelector((state) => state.user.placelist);
+
   const [viewState, setViewState] = React.useState({
     latitude: -33.86854,
     longitude: 151.20776,
@@ -20,7 +21,7 @@ const MainMap = () => {
     setViewState(() => ({
       longitude,
       latitude,
-      zoom: 11,
+      zoom: 12,
     }));
 
     setTimeout(() => {
@@ -40,29 +41,24 @@ const MainMap = () => {
           placelist.map((place, i) => (
             <Marker
               key={place.id}
-              longitude={place.geo.split(",")[1]}
-              latitude={place.geo.split(",")[0]}
+              longitude={place.geo.split(",")[0]}
+              latitude={place.geo.split(",")[1]}
               anchor="bottom"
-              onClick={() =>
+              onClick={(e) =>
                 clickMarker(
-                  place.geo.split(",")[1],
                   place.geo.split(",")[0],
+                  place.geo.split(",")[1],
                   place
                 )
               }
-            >
-              <img
-                src="https://cdn.pixabay.com/photo/2015/12/14/20/29/tracker-1093167_960_720.png"
-                className="map_marker"
-              />
-            </Marker>
+            />
           ))}
         {showPopup && (
           <Popup
             key={showPopup.id}
             offsetLeft={10}
-            longitude={showPopup.geo.split(",")[1]}
-            latitude={showPopup.geo.split(",")[0]}
+            longitude={showPopup.geo.split(",")[0]}
+            latitude={showPopup.geo.split(",")[1]}
             onClose={() => setShowPopup(false)}
           >
             <Link to={`/place/${showPopup.id}`}>

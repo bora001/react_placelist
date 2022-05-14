@@ -16,7 +16,6 @@ import "./App.scss";
 
 function App() {
   const dispatch = useDispatch();
-  const data = useSelector((state) => state.user);
   const fetchData = async () => {
     try {
       const result = await axios.get(devToken.firebaseUrl + `Place.json`);

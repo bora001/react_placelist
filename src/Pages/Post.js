@@ -18,37 +18,35 @@ const Post = () => {
   useEffect(() => {
     const getLocation = async (address) => {
       if (!geoClicked) {
-        // console.log(address, inputData.location);
         setInputData((inputData) => ({ ...inputData, geo: null }));
-        // const endpoint = `https://api.mapbox.com/geocoding/v5/mapbox.places/${address}.json?access_token=${devToken.mapToken}&autocomplete=true`;
-        // const response = await fetch(endpoint);
-        // const results = await response.json();
-        // setLocationList(() => results.features);
-        // console.log(results.features);
-        setLocationList((address) => [
-          {
-            id: "123",
-            place_name: "The Rocks, New South Wales, Australia",
-            geometry: {
-              coordinates: [151.209, -33.8599],
-            },
-          },
-          {
-            id: "78",
-            place_name: "Australia",
-            geometry: {
-              coordinates: [151.209, -33.8599],
-            },
-          },
-          {
-            id: "456",
+        const endpoint = `https://api.mapbox.com/geocoding/v5/mapbox.places/${address}.json?access_token=${devToken.mapToken}&autocomplete=true`;
+        const response = await fetch(endpoint);
+        const results = await response.json();
+        setLocationList(() => results.features);
+        // setLocationList((address) => [
+        //   {
+        //     id: "123",
+        //     place_name: "The Rocks, New South Wales, Australia",
+        //     geometry: {
+        //       coordinates: [151.209, -33.8599],
+        //     },
+        //   },
+        //   {
+        //     id: "78",
+        //     place_name: "Australia",
+        //     geometry: {
+        //       coordinates: [151.209, -33.8599],
+        //     },
+        //   },
+        //   {
+        //     id: "456",
 
-            place_name: "The Rocks, New South Wales, Australia",
-            geometry: {
-              coordinates: [9, -9],
-            },
-          },
-        ]);
+        //     place_name: "The Rocks, New South Wales, Australia",
+        //     geometry: {
+        //       coordinates: [9, -9],
+        //     },
+        //   },
+        // ]);
       }
     };
     let timer = setTimeout(() => {
@@ -93,6 +91,8 @@ const Post = () => {
 
   const postData = (e) => {
     e.preventDefault();
+    const btn = document.querySelector("input[type='submit']");
+    btn.type = "button";
     if (userInfo.userUid) {
       const storageRef = ref(storage, inputData.file.name);
       uploadBytes(storageRef, inputData.file).then((url) => {
@@ -102,6 +102,7 @@ const Post = () => {
             ...inputData,
             img: url,
             user: userInfo.userUid,
+            rate: 0,
           };
           push(dataRef(db, "Place"), newData);
           const { file, ...rest } = newData;
@@ -119,13 +120,19 @@ const Post = () => {
     <section className="section_new">
       <form className="form_new form_box" onChange={addImg} onSubmit={postData}>
         <h2>New PlaceList</h2>
-        <input type="text" placeholder="Name" name="name" required />
+        <input
+          type="text"
+          placeholder="Name"
+          name="name"
+          // value={inputData.name}
+          required
+        />
         <div className="input_box">
           <input
             type="text"
             placeholder="Location"
             name="location"
-            value={inputData.location}
+            // value={inputData.location}
             required
           />
           {!inputData.geo && (
