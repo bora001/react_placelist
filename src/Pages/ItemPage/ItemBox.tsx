@@ -1,12 +1,33 @@
 import React from "react";
 import ItemMap from "./ItemMap";
-import { placeType } from "../../Store/user-slice";
+import { getDatabase, ref as dataRef, remove } from "firebase/database";
+import { placeType, userAction } from "../../Store/user-slice";
+import { useAppDispatch, useAppSelector } from "../../Store/hooks";
+import { useNavigate } from "react-router-dom";
+
 type rateType = {
   rate: number;
 };
 export type itemBoxType = placeType & rateType;
 
 const ItemBox = (props: itemBoxType) => {
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const state = useAppSelector((state) => state.user.placelist);
+
+  const deleteItem = (e: React.MouseEvent) => {
+    const targetId = props.placelist[0].id;
+    const newList = state.filter((place) => place.id !== targetId);
+
+    if (window.confirm("Are you sure you want to delete this place ?")) {
+      const db = getDatabase();
+      remove(dataRef(db, "Place/" + targetId));
+      remove(dataRef(db, "Comments/" + targetId));
+      dispatch(userAction.setList(newList));
+      navigate("/list");
+    }
+  };
+
   return (
     <div className="item_box">
       <div className="detail_box">
@@ -35,7 +56,9 @@ const ItemBox = (props: itemBoxType) => {
       <div className="opt_box">
         <ItemMap {...props} />
         {props.userUid == props.placelist[0].user && (
-          <button className="del_place">Delete</button>
+          <button className="del_place" onClick={deleteItem}>
+            Delete
+          </button>
         )}
       </div>
     </div>
