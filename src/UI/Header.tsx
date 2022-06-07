@@ -1,12 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { useAppDispatch, useAppSelector } from "../Store/hooks";
 import { userAction } from "../Store/user-slice";
 import { getAuth, signOut } from "firebase/auth";
 
 const Header = () => {
-  const dispatch = useDispatch();
-  const isLogin = useSelector((state) => state.user.userUid);
+  const dispatch = useAppDispatch();
+  const isLogin = useAppSelector((state) => state.user.userUid);
   const auth = getAuth();
 
   const logout = () => {
