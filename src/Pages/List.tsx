@@ -1,10 +1,10 @@
 import React from "react";
 import Items from "./Items";
-import { useSelector } from "react-redux";
+import { useAppSelector } from "../Store/hooks";
 import "./List.scss";
 
 const List = () => {
-  const user = useSelector((state) => state.user);
+  const user = useAppSelector((state) => state.user);
 
   return (
     <section className="section_list">
