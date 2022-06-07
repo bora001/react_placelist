@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { placeListType } from "../Store/user-slice";
 
-const Items = (props) => {
+const Items = (props: { place: placeListType }) => {
   const [average, setAverage] = useState(
     props.place.rate / props.place.comments
   );
