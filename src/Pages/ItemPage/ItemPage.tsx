@@ -6,7 +6,7 @@ import ReviewBox from "./ReviewBox";
 import { placeListType } from "../../Store/user-slice";
 
 const ItemPage = () => {
-  const [placeInfo, setPlaceInfo] = useState<placeListType>();
+  const [placeInfo, setPlaceInfo] = useState<placeListType[]>();
   const [placeRate, setPlaceRate] = useState<number>(3);
   const user = useAppSelector((state) => state.user);
   const { id } = useParams();
@@ -15,8 +15,12 @@ const ItemPage = () => {
     const [placeDetail] = user.placelist.filter((item) => item.id == id);
 
     if (placeDetail) {
-      setPlaceInfo(() => placeDetail);
-      setPlaceRate(() => placeDetail.rate / placeDetail.comments);
+      setPlaceInfo(() => [placeDetail]);
+      setPlaceRate(() =>
+        isNaN(placeDetail.rate / placeDetail.comments)
+          ? 0
+          : placeDetail.rate / placeDetail.comments
+      );
     }
   }, [user.placelist]);
 

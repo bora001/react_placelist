@@ -105,6 +105,7 @@ const Post = () => {
             img: url,
             user: userInfo.userUid,
             rate: 0,
+            comments: 0,
           };
           update(dataRef(db, "Place/" + inputData.id), newData);
           const { file, ...rest } = newData;
