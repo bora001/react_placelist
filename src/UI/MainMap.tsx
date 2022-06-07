@@ -2,21 +2,26 @@ import React, { useState } from "react";
 import { devToken } from "../dev";
 import { Marker, Popup } from "react-map-gl";
 import ReactMapGL from "react-map-gl";
-import { useSelector } from "react-redux";
+import { useAppSelector } from "../Store/hooks";
+import { placeListType } from "../Store/user-slice";
 import { Link } from "react-router-dom";
 import "mapbox-gl/dist/mapbox-gl.css";
 import "./MainMap.scss";
 
 const MainMap = () => {
-  const [showPopup, setShowPopup] = useState(null);
-  const placelist = useSelector((state) => state.user.placelist);
+  const [showPopup, setShowPopup] = useState<placeListType | null>(null);
+  const placelist = useAppSelector((state) => state.user.placelist);
   const [viewState, setViewState] = React.useState({
     latitude: -33.86854,
     longitude: 151.20776,
     zoom: 10,
   });
 
-  const clickMarker = (longitude, latitude, place) => {
+  const clickMarker = (
+    longitude: number,
+    latitude: number,
+    place: placeListType
+  ) => {
     setViewState(() => ({
       longitude,
       latitude,
@@ -37,16 +42,16 @@ const MainMap = () => {
         onMove={(evt) => setViewState(evt.viewState)}
       >
         {placelist &&
-          placelist.map((place, i) => (
+          placelist.map((place: placeListType, i) => (
             <Marker
               key={place.id}
-              longitude={place.geo.split(",")[0]}
-              latitude={place.geo.split(",")[1]}
+              longitude={+place.geo.split(",")[0]}
+              latitude={+place.geo.split(",")[1]}
               anchor="bottom"
               onClick={(e) =>
                 clickMarker(
-                  place.geo.split(",")[0],
-                  place.geo.split(",")[1],
+                  +place.geo.split(",")[0],
+                  +place.geo.split(",")[1],
                   place
                 )
               }
@@ -55,10 +60,9 @@ const MainMap = () => {
         {showPopup && (
           <Popup
             key={showPopup.id}
-            offsetLeft={10}
-            longitude={showPopup.geo.split(",")[0]}
-            latitude={showPopup.geo.split(",")[1]}
-            onClose={() => setShowPopup(false)}
+            longitude={+showPopup.geo.split(",")[0]}
+            latitude={+showPopup.geo.split(",")[1]}
+            onClose={() => setShowPopup(null)}
           >
             <Link to={`/place/${showPopup.id}`}>
               <img src={showPopup.img} alt="" />
