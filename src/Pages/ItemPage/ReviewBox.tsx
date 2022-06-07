@@ -1,8 +1,14 @@
 import { useParams } from "react-router-dom";
-import React, { useState, useRef, useEffect } from "react";
+import React, {
+  useState,
+  useRef,
+  useEffect,
+  Dispatch,
+  SetStateAction,
+} from "react";
 import { useAppSelector } from "../../Store/hooks";
 import { useNavigate } from "react-router-dom";
-import { ReviewListType } from "../../Store/user-slice";
+import { ReviewListType, placeListType } from "../../Store/user-slice";
 import { getAuth } from "firebase/auth";
 import {
   getDatabase,
@@ -12,12 +18,16 @@ import {
   update,
 } from "firebase/database";
 
+type propsType = {
+  placelist: placeListType[];
+  setRate: Dispatch<SetStateAction<number>>;
+};
 type reviewDataType = {
   rate: number;
   comment: string;
 };
 
-const ReviewBox = (props: any) => {
+const ReviewBox = (props: propsType) => {
   console.log(props, "prpos");
   const params = useParams();
   const navigate = useNavigate();
