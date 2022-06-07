@@ -28,7 +28,6 @@ type reviewDataType = {
 };
 
 const ReviewBox = (props: propsType) => {
-  console.log(props, "prpos");
   const params = useParams();
   const navigate = useNavigate();
   const ref = useRef<HTMLFormElement>(null);
@@ -38,7 +37,6 @@ const ReviewBox = (props: propsType) => {
     rate: 3,
   });
   const [reviewList, setReviewList] = useState<ReviewListType[]>([]);
-  console.log(reviewList, "list");
   const paramsId = params.id;
   useEffect(() => {
     const db = getDatabase();
@@ -55,7 +53,6 @@ const ReviewBox = (props: propsType) => {
     get(dataRef(db, "Comments/" + paramsId)).then((res) => {
       const newArr: ReviewListType[] = Object.values(res.val());
       const newList = newArr.filter((item: any) => item.commentId !== cmId);
-      console.log(newList);
 
       remove(dataRef(db, "Comments/" + paramsId + "/" + cmId));
       setReviewList(() => newList);
