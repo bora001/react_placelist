@@ -1,5 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+export type ReviewListType = {
+  comment: string;
+  commentId: string;
+  rate: number;
+  user: string;
+  username: string;
+};
+
 export type placeListType = {
   geo: string;
   id: string;

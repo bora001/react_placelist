@@ -1,7 +1,8 @@
 import { useParams } from "react-router-dom";
 import React, { useState, useRef, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useAppSelector } from "../../Store/hooks";
 import { useNavigate } from "react-router-dom";
+import { ReviewListType } from "../../Store/user-slice";
 import { getAuth } from "firebase/auth";
 import {
   getDatabase,
@@ -11,32 +12,41 @@ import {
   update,
 } from "firebase/database";
 
-const ReviewBox = (props) => {
+type reviewDataType = {
+  rate: number;
+  comment: string;
+};
+
+const ReviewBox = (props: any) => {
+  console.log(props, "prpos");
   const params = useParams();
   const navigate = useNavigate();
-  const ref = useRef();
-  const user = useSelector((state) => state.user);
-  const [reviewData, setReviewData] = useState({ rate: 3 });
-  const [reviewList, setReviewList] = useState([]);
+  const ref = useRef<HTMLFormElement>(null);
+  const user = useAppSelector((state) => state.user);
+  const [reviewData, setReviewData] = useState<reviewDataType>({
+    comment: "",
+    rate: 3,
+  });
+  const [reviewList, setReviewList] = useState<ReviewListType[]>([]);
+  console.log(reviewList, "list");
   const paramsId = params.id;
   useEffect(() => {
     const db = getDatabase();
     get(dataRef(db, "Comments/" + paramsId)).then((res) => {
       if (res.val()) {
-        const reviews = Object.values(res.val());
+        const reviews: ReviewListType[] = Object.values(res.val());
         setReviewList(() => reviews);
-        const rate = reviews.reduce((a, b) => Number(a.rate) + Number(b.rate));
-        setReviewData(() => rate / reviews.length);
       }
     });
   }, []);
 
-  const delComment = (cmId, cmRate) => {
+  const delComment = (cmId: string, cmRate: number) => {
     const db = getDatabase();
     get(dataRef(db, "Comments/" + paramsId)).then((res) => {
-      const newList = Object.values(res.val()).filter(
-        (item) => item.commentId !== cmId
-      );
+      const newArr: ReviewListType[] = Object.values(res.val());
+      const newList = newArr.filter((item: any) => item.commentId !== cmId);
+      console.log(newList);
+
       remove(dataRef(db, "Comments/" + paramsId + "/" + cmId));
       setReviewList(() => newList);
       get(dataRef(db, "Place/" + paramsId)).then((res) => {
@@ -54,16 +64,17 @@ const ReviewBox = (props) => {
     });
   };
 
-  const addReview = (e) => {
+  const addReview = (e: React.FormEvent) => {
     e.preventDefault();
     const random = Math.random().toString(36).slice(2);
     const commentId = random + random;
-    if (user.userUid) {
-      const comment = {
+    const username = getAuth().currentUser!.displayName;
+    if (user.userUid && username) {
+      const comment: ReviewListType = {
         ...reviewData,
         user: user.userUid,
         commentId,
-        username: getAuth().currentUser.displayName,
+        username,
       };
       const db = getDatabase();
       update(dataRef(db, "Comments/" + paramsId + "/" + commentId), comment);
@@ -79,14 +90,18 @@ const ReviewBox = (props) => {
         update(dataRef(db, "Place/" + paramsId), newPlaceInfo);
         props.setRate(() => newPlaceInfo.rate / newPlaceInfo.comments);
       });
-      ref.current.reset();
+      ref.current!.reset();
     } else {
       navigate("/login");
     }
   };
 
-  const getData = (e) => {
-    const { name, value } = e.target;
+  const getData = (e: React.FormEvent) => {
+    const target = e.target as HTMLFormElement;
+    let { name, value } = target;
+    if (name == "rate") {
+      value = +value;
+    }
     setReviewData(() => ({ ...reviewData, [name]: value }));
   };
 
