@@ -7,7 +7,7 @@ import {
 import { auth } from "../firebase-config";
 import { useNavigate } from "react-router-dom";
 
-type inputDataType = {
+export type inputDataType = {
   email?: string;
   username?: string;
   password?: string;
@@ -37,12 +37,11 @@ const Register = () => {
   };
 
   const postData = async () => {
-    const { email, password } = inputData!;
     try {
       const user = await createUserWithEmailAndPassword(
         auth,
-        email!,
-        password!
+        inputData!.email!,
+        inputData!.password!
       ).then((res) => {
         updateProfile(getAuth().currentUser!, {
           displayName: inputData!.username,
