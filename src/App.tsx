@@ -7,7 +7,7 @@ import Login from "./Pages/Login";
 import Register from "./Pages/Register";
 import Post from "./Pages/Post";
 import "mapbox-gl/dist/mapbox-gl.css";
-import ItemDetail from "./Pages/ItemPage/ItemDetail";
+import ItemPage from "./Pages/ItemPage/ItemPage";
 import axios from "axios";
 import { userAction } from "./Store/user-slice";
 import { devToken } from "./dev";
@@ -37,7 +37,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/post" element={<Post />} />
-        <Route path="/place/:id" element={<ItemDetail />} />
+        <Route path="/place/:id" element={<ItemPage />} />
       </Routes>
     </BrowserRouter>
   );

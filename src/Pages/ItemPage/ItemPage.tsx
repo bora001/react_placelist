@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+import { useAppSelector } from "../../Store/hooks";
 import ItemBox from "./ItemBox";
 import ReviewBox from "./ReviewBox";
-const ItemDetail = () => {
-  const [placeInfo, setPlaceInfo] = useState();
-  const [placeRate, setPlaceRate] = useState(3);
-  const user = useSelector((state) => state.user);
+import { placeListType } from "../../Store/user-slice";
+
+const ItemPage = () => {
+  const [placeInfo, setPlaceInfo] = useState<placeListType>();
+  const [placeRate, setPlaceRate] = useState<number>(3);
+  const user = useAppSelector((state) => state.user);
   const { id } = useParams();
 
   useEffect(() => {
@@ -22,12 +24,16 @@ const ItemDetail = () => {
     <section className="section_place">
       {placeInfo && (
         <div className="place_box">
-          <ItemBox place={placeInfo} uid={user.userUid} rate={placeRate} />
-          <ReviewBox place={placeInfo} setRate={setPlaceRate} />
+          <ItemBox
+            placelist={placeInfo}
+            userUid={user.userUid}
+            rate={placeRate}
+          />
+          <ReviewBox placelist={placeInfo} setRate={setPlaceRate} />
         </div>
       )}
     </section>
   );
 };
 
-export default ItemDetail;
+export default ItemPage;

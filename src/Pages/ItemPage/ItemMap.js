@@ -5,8 +5,8 @@ import { Marker } from "react-map-gl";
 
 const ItemMap = (props) => {
   const [viewport, setViewport] = useState({
-    longitude: props.place.geo.split(",")[0],
-    latitude: props.place.geo.split(",")[1],
+    longitude: props.placelist.geo.split(",")[0],
+    latitude: props.placelist.geo.split(",")[1],
     zoom: 10,
   });
 
@@ -21,9 +21,9 @@ const ItemMap = (props) => {
         }}
       >
         <Marker
-          key={props.place.id}
-          longitude={props.place.geo.split(",")[0]}
-          latitude={props.place.geo.split(",")[1]}
+          key={props.placelist.id}
+          longitude={props.placelist.geo.split(",")[0]}
+          latitude={props.placelist.geo.split(",")[1]}
           anchor="bottom"
         />
       </ReactMapGL>

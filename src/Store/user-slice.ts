@@ -13,10 +13,10 @@ export type placeListType = {
 
 export type placeType = {
   userUid: string | null;
-  placeList: placeListType[];
+  placelist: placeListType[];
 };
 
-const initialState = {
+const initialState: placeType = {
   userUid: null,
   placelist: [],
 };
