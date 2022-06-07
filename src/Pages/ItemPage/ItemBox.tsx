@@ -4,7 +4,7 @@ import { placeType } from "../../Store/user-slice";
 type rateType = {
   rate: number;
 };
-type itemBoxType = placeType & rateType;
+export type itemBoxType = placeType & rateType;
 
 const ItemBox = (props: itemBoxType) => {
   return (
@@ -33,7 +33,7 @@ const ItemBox = (props: itemBoxType) => {
         </div>
       </div>
       <div className="opt_box">
-        {/* <ItemMap {...props} /> */}
+        <ItemMap {...props} />
         {props.userUid == props.placelist[0].user && (
           <button className="del_place">Delete</button>
         )}
