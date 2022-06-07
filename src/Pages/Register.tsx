@@ -1,5 +1,4 @@
 import React, { useState, useRef } from "react";
-
 import {
   createUserWithEmailAndPassword,
   updateProfile,
@@ -8,21 +7,29 @@ import {
 import { auth } from "../firebase-config";
 import { useNavigate } from "react-router-dom";
 
+type inputDataType = {
+  email?: string;
+  username?: string;
+  password?: string;
+  passwordConfirm?: string;
+};
+
 const Register = () => {
   const navigate = useNavigate();
-  const [inputData, setInputData] = useState({});
-  const ref = useRef();
+  const [inputData, setInputData] = useState<inputDataType>();
+  const ref = useRef<HTMLFormElement>(null);
 
-  const getData = (e) => {
-    const { name, value } = e.target;
+  const getData = (e: React.FormEvent) => {
+    const target = e.target as HTMLFormElement;
+    const { name, value } = target;
     setInputData((prev) => ({
       ...inputData,
       [name]: value,
     }));
   };
-  const register = (e) => {
+  const register = (e: React.FormEvent) => {
     e.preventDefault();
-    if (inputData.password == inputData.passwordConfirm) {
+    if (inputData!.password == inputData!.passwordConfirm) {
       postData();
     } else {
       alert("Incorrect password");
@@ -30,20 +37,23 @@ const Register = () => {
   };
 
   const postData = async () => {
+    const { email, password } = inputData!;
     try {
       const user = await createUserWithEmailAndPassword(
         auth,
-        inputData.email,
-        inputData.password
+        email!,
+        password!
       ).then((res) => {
-        updateProfile(getAuth().currentUser, {
-          displayName: inputData.username,
+        updateProfile(getAuth().currentUser!, {
+          displayName: inputData!.username,
         });
         res.user.uid && navigate("/login");
       });
     } catch (err) {
-      alert(err.message);
-      ref.current.reset();
+      if (err instanceof Error) {
+        alert(err.message);
+        ref.current!.reset();
+      }
     }
   };
 
