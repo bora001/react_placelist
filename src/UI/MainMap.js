@@ -1,16 +1,15 @@
 import React, { useState } from "react";
-import "mapbox-gl/dist/mapbox-gl.css";
 import { devToken } from "../dev";
 import { Marker, Popup } from "react-map-gl";
 import ReactMapGL from "react-map-gl";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import "mapbox-gl/dist/mapbox-gl.css";
 import "./MainMap.scss";
 
 const MainMap = () => {
   const [showPopup, setShowPopup] = useState(null);
   const placelist = useSelector((state) => state.user.placelist);
-
   const [viewState, setViewState] = React.useState({
     latitude: -33.86854,
     longitude: 151.20776,

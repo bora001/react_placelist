@@ -11,11 +11,11 @@ import ItemDetail from "./Pages/ItemPage/ItemDetail";
 import axios from "axios";
 import { userAction } from "./Store/user-slice";
 import { devToken } from "./dev";
-import { useSelector, useDispatch } from "react-redux";
+import { useAppDispatch } from "./Store/hooks";
 import "./App.scss";
 
 function App() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const fetchData = async () => {
     try {
       const result = await axios.get(devToken.firebaseUrl + `Place.json`);
@@ -32,12 +32,12 @@ function App() {
     <BrowserRouter>
       <Header />
       <Routes>
-        <Route path="/" element={<MainMap />} exact />
-        <Route path="/list" element={<List />} exact />
-        <Route path="/login" element={<Login />} exact />
-        <Route path="/register" element={<Register />} exact />
-        <Route path="/post" element={<Post />} exact />
-        <Route path="/place/:id" element={<ItemDetail />} exact />
+        <Route path="/" element={<MainMap />} />
+        <Route path="/list" element={<List />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/post" element={<Post />} />
+        <Route path="/place/:id" element={<ItemDetail />} />
       </Routes>
     </BrowserRouter>
   );

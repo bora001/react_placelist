@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import ReactMapGL from "react-map-gl";
 import { devToken } from "../../dev";
 import { Marker } from "react-map-gl";
-import "mapbox-gl/dist/mapbox-gl.css";
 
 const ItemMap = (props) => {
   const [viewport, setViewport] = useState({
