@@ -1,5 +1,7 @@
 # V3 (current) - React Placelist
 
+<img src='https://img.shields.io/badge/React-61DAFB?style=flat-square&logo=React&logoColor=white'/> <img src='https://img.shields.io/badge/Typescript-127EFA?style=flat-square&logo=Typescript&logoColor=white'/> <img src='https://img.shields.io/badge/redux-tookit-E34F26?style=flat-square&logo=redux-tookit&logoColor=white'/> <img src='https://img.shields.io/badge/firebase-FA8612?style=flat-square&logo=Firebase&logoColor=white'/>
+
 <br/>
 
 - 장소 리뷰 사이트
@@ -21,8 +23,10 @@
 <br/>
 
 # Other version
-- v1 - vanilla javascript Placelist
-  https://github.com/bora001/placelist
+
+<img src='https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square&logo=JavaScript&logoColor=white'/> <img src='https://img.shields.io/badge/MongoDB-47A248?style=flat-square&logo=MongoDB&logoColor=white'/> <img src='https://img.shields.io/badge/Express.js-000000?style=flat-square&logo=Express&logoColor=white'/> <img src='https://img.shields.io/badge/Heroku-430098?style=flat-square&logo=Heroku&logoColor=white'/> 
+- v1 - vanilla javascript Placelist : https://github.com/bora001/placelist
+
 - v2 - Ejs Placelist
   https://github.com/bora001/placelist-ejs
 
